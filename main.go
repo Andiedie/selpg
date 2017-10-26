@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	start    = flag.Int("s", -1, "start page number")
-	end      = flag.Int("e", -1, "end page number")
-	line     = flag.Int("l", -1, "line number per page")
+	start    = flag.Int("s", -1, "[REQUIRED] start page number")
+	end      = flag.Int("e", -1, "[REQUIRED] end page number")
+	line     = flag.Int("l", 76, "line number per page")
 	formFeed = flag.Bool("f", false, "use '\\f' to paging instead of line")
 	file     *os.File
 )
@@ -45,13 +45,8 @@ func parse() {
 		err = errors.New("flag 'e' required")
 	} else if *start > *end {
 		err = errors.New("The start page number can not be greater than the end page number")
-	} else if *line != -1 && *formFeed {
-		err = errors.New("flag 'l' and 'f' are mutually exclusive")
 	}
 	report(err)
-	if *line == -1 && !*formFeed {
-		*line = 72
-	}
 }
 
 func getReader() *bufio.Reader {
